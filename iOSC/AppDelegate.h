@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <VVOSC/VVOSC.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>{
+    OSCManager  *manager;
+    OSCOutPort  *outPort;
+    OSCInPort   *inPort;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 

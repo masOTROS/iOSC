@@ -8,12 +8,37 @@
 
 #import "AppDelegate.h"
 
+#define ADDRESS @"127.0.0.1"
+#define OUT_PORT 1234
+#define IN_PORT  1235
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    // create an OSCManager- set myself up as its delegate
+    manager = [[OSCManager alloc] init];
+    [manager setDelegate:self];
+    
+    // create an input port for receiving OSC data
+    [manager createNewInputForPort:IN_PORT];
+    
+    // create an output so i can send OSC data to myself
+    outPort = [manager createNewOutputToAddress:ADDRESS atPort:OUT_PORT];
+    
+    // make an OSC message
+    OSCMessage  *newMsg = [OSCMessage createWithAddress:@"/Address/Path/1"];
+    
+    // add a bunch arguments to the message
+    [newMsg addInt:12];
+    [newMsg addFloat:12.34];
+    [newMsg addBOOL:YES];
+    [newMsg addString:@"Hello World!"];
+    
+    // send the OSC message
+    [outPort sendThisMessage:newMsg];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
